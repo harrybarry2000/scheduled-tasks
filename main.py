@@ -36,3 +36,54 @@ if today_tuple in birthdays_dict:
             to_addrs=birthday_person["email"],
             msg=f"Subject:Happy Birthday!\n\n{contents}"
         )
+
+import requests
+import os
+
+api_key = os.environ.get("OWM_API_KEY")
+BOT_TOKEN = os.environ.get("WEATHER_BOT_TOKEN")
+CHAT_ID = os.environ.get("WEATHER_CHAT_ID")
+
+def send_telegram(message):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+
+    response = requests.post(
+        url,
+        data={
+            "chat_id": CHAT_ID,
+            "text": message,
+        },
+    )
+
+    response.raise_for_status()
+    return response.json()
+
+api_adress = 'https://api.openweathermap.org/data/2.5/forecast'
+MY_LAT = 50.845100
+MY_LNG = 4.264030
+
+parameters = {
+    "appid": api_key,
+    "lat": MY_LAT,
+    "lon": MY_LNG,
+    "cnt": 4,
+    "units": "metric",
+
+}
+
+connection = requests.get(url=api_adress, params=parameters)
+connection.raise_for_status()
+
+data = connection.json()
+
+will_rain = False
+for item in data['list']:
+    weather_id = int((item['weather'][0]["id"]))
+    if weather_id < 700:
+        will_rain = True
+    
+if will_rain:
+    send_telegram("It will rain today ☂️")
+else:
+    send_telegram("No rain predicted 🌞")
+
