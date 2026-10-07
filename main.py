@@ -11,10 +11,15 @@ import pandas
 import random
 import smtplib
 import os
+import requests
+
 
 # import os and use it to get the Github repository secrets
 MY_EMAIL = os.environ.get("MY_EMAIL")
 MY_PASSWORD = os.environ.get("MY_PASSWORD")
+api_key = os.environ.get("OWM_API_KEY")
+BOT_TOKEN = os.environ.get("WEATHER_BOT_TOKEN")
+CHAT_ID = os.environ.get("WEATHER_CHAT_ID")
 
 today = datetime.now()
 today_tuple = (today.month, today.day)
@@ -36,13 +41,6 @@ if today_tuple in birthdays_dict:
             to_addrs=birthday_person["email"],
             msg=f"Subject:Happy Birthday!\n\n{contents}"
         )
-
-import requests
-import os
-
-api_key = os.environ.get("OWM_API_KEY")
-BOT_TOKEN = os.environ.get("WEATHER_BOT_TOKEN")
-CHAT_ID = os.environ.get("WEATHER_CHAT_ID")
 
 def send_telegram(message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
