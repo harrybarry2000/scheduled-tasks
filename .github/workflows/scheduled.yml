@@ -43,4 +43,8 @@ jobs:
           # Add more secrets in Settings > Secrets > Actions
           MY_EMAIL: ${{ secrets.MY_EMAIL }}
           MY_PASSWORD: ${{ secrets.MY_PASSWORD }}
+          OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
+          WEATHER_BOT_TOKEN: ${{ secrets.WEATHER_BOT_TOKEN }}
+          WEATHER_CHAT_ID: ${{ secrets.WEATHER_CHAT_ID }}
+          
         run: python main.py
